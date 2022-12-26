@@ -1,32 +1,18 @@
-import styles from "./App.module.css";
-import {useState, useEffect} from "react";
-import {logDOM} from "@testing-library/react";
+import Home from "./routes/Home";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Detail from "./routes/Detail";
 
 function App() {
-    const [loading, setLoading] = useState(true);
-    const [coins, setCoins] = useState([]);
-    useEffect(() => {
-        fetch("https://api.coinpaprika.com/v1/tickers")
-            .then((rs) => rs.json())
-            .then((json) => {
-                setCoins(json);
-                setLoading(false);
-            });
-    }, []);
-
-    return (
-        <div>
-            <h1>The Coins! ({coins.length})</h1>
-            {loading ? <strong>Loading...</strong> : <ul>
-                {
-                    coins.map((coins, index) => <li key={index}>{coins.name} ({coins.symbol}) :
-                        ${coins.quotes.USD.price}</li>)
-
-                }
-            </ul>}
-
-        </div>
-    );
+    return <Router>
+        <Routes>
+            <Route path={"/hello"} element={<h1>hello!</h1>}/>
+            <Route
+                path="/movie/:id"
+                element={<Detail />}
+            />
+            <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
+        </Routes>
+    </Router>;
 }
 
 export default App;
